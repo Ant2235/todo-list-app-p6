@@ -31,6 +31,8 @@ function addTask() {
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = "checkbox" + taskList.childElementCount;
+    checkbox.addEventListener("change", removeTask)
+    
 
     // Create label
     let label = document.createElement("label");
@@ -46,4 +48,9 @@ function addTask() {
 
     // Add 
     taskList.appendChild(taskDiv);
+    console.log("hello")
+}
+
+function removeTask() {
+    
 }
