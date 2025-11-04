@@ -48,9 +48,18 @@ function addTask() {
 
     // Add 
     taskList.appendChild(taskDiv);
-    console.log("hello")
 }
 
-function removeTask() {
-    
+function removeTask(event) {
+    let checkbox = event.target;
+    let checkboxId = checkbox.id;
+    let numIndex = checkboxId.indexOf("checkbox") + "checkbox".length;
+    let taskIdNumber = checkboxId.substring(numIndex);
+    let taskDivId = "task" + taskIdNumber;
+    let taskDiv = document.getElementById(taskDivId);
+    let taskList = document.getElementById("task-list");
+
+    if (taskList && taskDiv) {
+        taskList.removeChild(taskDiv);
+    }
 }
