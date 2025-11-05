@@ -50,7 +50,7 @@ function addTask() {
     taskList.appendChild(taskDiv);
 }
 
-function removeTask(event) {
+/* function removeTask(event) {
     let checkbox = event.target;
     let checkboxId = checkbox.id;
     let numIndex = checkboxId.indexOf("checkbox") + "checkbox".length;
@@ -61,5 +61,30 @@ function removeTask(event) {
 
     if (taskList && taskDiv) {
         taskList.removeChild(taskDiv);
+    }
+ }
+*/
+
+function removeTask(event) {
+    let checkboxId = event.target.id;
+    let idNum = checkboxId.substring(8);
+    let taskDiv = document.getElementById("task" + idNum);
+    taskDiv.classList.add("remove")
+
+    let tasklist = document.getElementById("task-list");
+
+    //tasklist.removeChild(taskDiv);
+    setTimeout(function () {
+        tasklist.removeChild(taskDiv);
+        fixTaskColors();
+    }, 1000)
+}
+function fixTaskColors() {
+    let tasklist = document.getElementById("task-list");
+    for (let i = 0; i < tasklist.childElementCount; i++) {
+        tasklist.children[i].style.backgroundColor = "cornflowerblue";
+        if (i % 2 == 1) {
+            tasklist.children[i].style.backgroundColor = "orange";
+        }
     }
 }
