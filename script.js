@@ -13,8 +13,33 @@ function addTask() {
     let taskText = textBox.value;
     textBox.value = "";
 
-    createTask(taskText);
+    // Prevent empty task
+    if (taskText == ""){
+        alert("Please enter a task");
+        return
+    }
+
+    let idNum = generateIdNum();
+
+    createTask(taskText, idNum);
+
+     // Save task to local storage
+    localStorage.setItem("task", + idNum, taskText);
+    console.log(localStorage.length);
 }
+
+function generateIdNum() {
+    // Start with idNum = 0
+    let idNum = 0;
+
+    // Check if a task with that id exist
+    while (localStorage.getItem("task" + idNum) != null) {
+        idNum++;
+    }
+    // If it doesn, increment idNum and check again
+    return idNum;
+}
+
 
 /* function removeTask(event) {
     let checkbox = event.target;
@@ -31,6 +56,8 @@ function addTask() {
  }
 */
 
+
+
 function removeTask(event) {
     let checkboxId = event.target.id;
     let idNum = checkboxId.substring(8);
@@ -43,8 +70,10 @@ function removeTask(event) {
     setTimeout(function () {
         tasklist.removeChild(taskDiv);
         fixTaskColors();
+        localStorage.removeItem(taskDiv.id);
     }, 1000)
 }
+
 function fixTaskColors() {
     let tasklist = document.getElementById("task-list");
     for (let i = 0; i < tasklist.childElementCount; i++) {
@@ -55,12 +84,11 @@ function fixTaskColors() {
     }
 }
 
-function createTask(taskText) {
+
+
+function createTask(taskText, idNum) {
     // Get tasklist
     let taskList = document.getElementById("task-list");
-
-    // Generate id number 
-    let idNum = taskList.childElementCount;
 
     // Create task div
     let taskDiv = document.createElement("div");
@@ -84,9 +112,7 @@ function createTask(taskText) {
     // Set label text
     label.innerText = taskText;
 
-    // Save task to local storage
-    localStorage.setItem(taskDiv.id, taskText);
-    console.log(localStorage.length);
+   
 
     // Add the checkbox the task div
     taskDiv.appendChild(checkbox);
@@ -98,14 +124,17 @@ function createTask(taskText) {
     taskList.appendChild(taskDiv);
 }
 
-function loadTask() {
+
+
+function loadTasks() {
     console.log(localStorage.length);
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
         console.log(key);
         let taskText = localStorage.getItem(key);
         console.log(taskText);
-        createTask(taskText)
+        createTask(taskText, key.substring(4));
     }
+    fixTaskColors();
 }
-loadTask();
+loadTasks();
